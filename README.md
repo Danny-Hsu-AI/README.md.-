@@ -77,3 +77,4 @@ API Key 的安全管理：
 
 ✅ 結論：
 這次任務讓我完整體驗了 AI prompt engineering 的基本流程與實作，並成功完成 5+ 多樣化 prompt 的測試與輸出，達到任務要求。未來我會持續優化 prompt 設計，並更注意 API key 的安全管理。
+
