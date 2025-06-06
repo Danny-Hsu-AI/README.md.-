@@ -92,36 +92,23 @@ AI 改進後完整回覆：
 from openai import OpenAI
 import os
 
-api_key = os.getenv("OPENAI_API_KEY")
-if not api_key:
-    raise ValueError("請先設定環境變數 OPENAI_API_KEY")
+client = OpenAI()
 
-client = OpenAI(api_key=api_key)
+input_text = "量子力學描述微觀世界，與經典物理不同。它有疊加態、量子糾纏等特性，應用於量子計算和量子通訊。"
 
-input_text = """
-量子力學是一門描述微觀世界物理行為的科學。它不同於經典物理學，
-因為在原子和亞原子層級，粒子可以同時處於多種狀態，稱為疊加態。
-量子糾纏則表示兩個粒子即使相距遙遠，也會有密切的關聯性。
-這些現象讓人難以用直覺理解，但已經在量子計算與量子通訊等應用上展現出潛力。
-"""
-
-prompt = f"請用中文，100字以內簡述以下文章的重點：\n{input_text}"
+prompt = f"用中文，100字內簡述：{input_text}"
 
 response = client.chat.completions.create(
     model="gpt-4o-mini",
     messages=[
-        {"role": "system", "content": "你是一個摘要助理，回答簡潔明確。"},
         {"role": "user", "content": prompt}
     ]
 )
 
 summary = response.choices[0].message.content.strip()
 
-print("摘要：")
 print(summary)
 
 with open("summary.txt", "w", encoding="utf-8") as f:
     f.write(summary)
-
-功能說明
-此腳本使用 OpenAI API，根據輸入文章自動生成 100 字以內的中文摘要。藉由系統提示，確保摘要簡潔且重點明確。程式會將結果印出並保存，方便快速理解長文內容。
+這個簡單腳本使用 OpenAI API，將輸入文章縮寫為 100 字以內的中文摘要。執行後會印出並儲存結果，方便快速理解文章重點。
