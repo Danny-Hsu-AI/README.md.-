@@ -86,4 +86,42 @@ AI 改進後完整回覆：
 天空之所以是藍色的，是因為太陽光在進入大氣層時會被空氣分子散射。太陽光包含了多種顏色的光，其中藍光的波長較短，更容易被散射到各個方向。這種散射讓我們無論在哪個角度看天空，都能看到藍光，因此天空呈現藍色。
 
 總結分析（約 150 字）
-透過這些改進提示，AI 的回覆從簡短直述，進化為邏輯分明、條理清晰的解釋。改進提示 1 促使 AI 使用生活化的比喻和例子，讓複雜科學概念更易理解；改進提示 2 用 chain-of-thought 技巧，讓推理步驟具體呈現，幫助使用者理解科學原理；改進提示 3 的 few-shot 技巧則促進了風格穩定性，讓回答更符合專業簡潔的標準。整體而言，這些提示優化讓 AI 回覆更豐富、準確與可讀，成功符合改進輸出品質的目標。
+透過這些改進提示，AI 的回覆從簡短直述，進化為邏輯分明、條理清晰的解釋。改進提示 1 促使 AI 使用生活化的比喻和例子，讓複雜科學概念更易理解；改進提示 2 用 chain-of-thought 技巧，讓推理步驟具體呈現，幫助使用者理解科學原理；改進提示 3 的 few-shot 技巧則促進了風格穩定性，讓回答更符合專業簡潔的標準。
+整體而言，這些提示優化讓 AI 回覆更豐富、準確與可讀，成功符合改進輸出品質的目標。
+
+from openai import OpenAI
+import os
+
+api_key = os.getenv("OPENAI_API_KEY")
+if not api_key:
+    raise ValueError("請先設定環境變數 OPENAI_API_KEY")
+
+client = OpenAI(api_key=api_key)
+
+input_text = """
+量子力學是一門描述微觀世界物理行為的科學。它不同於經典物理學，
+因為在原子和亞原子層級，粒子可以同時處於多種狀態，稱為疊加態。
+量子糾纏則表示兩個粒子即使相距遙遠，也會有密切的關聯性。
+這些現象讓人難以用直覺理解，但已經在量子計算與量子通訊等應用上展現出潛力。
+"""
+
+prompt = f"請用中文，100字以內簡述以下文章的重點：\n{input_text}"
+
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "system", "content": "你是一個摘要助理，回答簡潔明確。"},
+        {"role": "user", "content": prompt}
+    ]
+)
+
+summary = response.choices[0].message.content.strip()
+
+print("摘要：")
+print(summary)
+
+with open("summary.txt", "w", encoding="utf-8") as f:
+    f.write(summary)
+
+功能說明
+此腳本使用 OpenAI API，根據輸入文章自動生成 100 字以內的中文摘要。藉由系統提示，確保摘要簡潔且重點明確。程式會將結果印出並保存，方便快速理解長文內容。
